@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Lato:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btn-fill {
+    @apply rounded-md
+    bg-primaryLight
+    shadow-soft
+    font-lato
+    text-base
+    font-bold
+    text-white
+    px-6 py-2
+    hover:bg-primary
+    hover:shadow-softHover
+    transition-bg-shadow;
+  }
+
+  .btn-text {
+    @apply bg-transparent font-lato font-bold text-base text-darkChocolate px-6 py-2 transition-colors hover:text-pansyPurple;
+  }
+
+  .input {
+    @apply rounded-md text-lg p-1 border border-gray-400 focus-outline-black;
+  }
+}
+
+@layer utilities {
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-3rem);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out forwards;
+  }
+
+  .focus-outline-black:focus {
+    outline: 2px solid #1d161a;
+  }
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(rgb(34, 44, 49), rgb(17, 29, 50));
+  font-family: 'Lato', serif;
+}

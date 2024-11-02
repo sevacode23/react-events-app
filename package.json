@@ -1,0 +1,16 @@
+{
+  "name": "redux-toolkit",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "start:web": "cd apps/web && yarn run dev",
+    "build:web": "cd apps/web && yarn run build",
+    "start:server": "cd apps/server && yarn run dev"
+  }
+}
