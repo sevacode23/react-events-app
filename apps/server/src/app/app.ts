@@ -1,8 +1,13 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import { IEvent } from '@events/shared';
 
 import { EVENTS } from '../data/events';
 import { generateRandomNumber, sleep } from '../utils';
+
+interface IEventsParams {
+  search?: string;
+}
 
 export const app = express();
 
@@ -19,9 +24,24 @@ app.get('/', (_req: Request, res: Response) => {
   res.send('Bye, word!');
 });
 
-app.get('/events', async (_req, res) => {
-  res.send(EVENTS);
-});
+app.get(
+  '/events',
+  async (req: Request<unknown, IEvent[], unknown, IEventsParams>, res) => {
+    const search = req.query.search;
+
+    let events = [...EVENTS];
+
+    if (search) {
+      events = events.filter((event) => {
+        const searchText = `${event.title} ${event.description} ${event.location}`;
+
+        return searchText.toLowerCase().includes(search.toLowerCase());
+      });
+    }
+
+    res.send(events);
+  }
+);
 
 app.get('/random-number', async (_req: Request, res: Response) => {
   await sleep(1000);

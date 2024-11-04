@@ -1,11 +1,15 @@
-import { EventsList } from './evens-list';
+import { EventsSectionLayout } from './events-section-layout';
+import { NewEvents } from './new-events';
+import { SearchEvents } from './search-events';
 
 export const EventsContent = () => (
-  <section className="py-12 grid gap-y-12">
-    <h2 className="text-center text-pastelBlue text-3xl font-bold">
-      Recently added events
-    </h2>
+  <section className="py-12 grid gap-y-16">
+    <EventsSectionLayout title="Recently added events">
+      <NewEvents />
+    </EventsSectionLayout>
 
-    <EventsList />
+    <EventsSectionLayout title="Find your next event!">
+      <SearchEvents />
+    </EventsSectionLayout>
   </section>
 );

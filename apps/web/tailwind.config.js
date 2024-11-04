@@ -34,6 +34,7 @@ export default {
 
       transitionProperty: {
         'bg-shadow': 'background-color, box-shadow',
+        'max-h': 'max-height',
       },
     },
   },

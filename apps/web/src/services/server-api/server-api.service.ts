@@ -1,5 +1,5 @@
 import { IEvent } from '@events/shared';
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 import { SERVER_CONSTANTS } from 'const';
 
@@ -10,8 +10,8 @@ class ServerAPI {
     this.instance = axios.create({ baseURL: SERVER_CONSTANTS.URL });
   }
 
-  private async get<T>(url: string) {
-    const response = await this.instance.get<T>(url);
+  private async get<T>(url: string, config?: AxiosRequestConfig<T>) {
+    const response = await this.instance.get<T>(url, config);
     return response.data;
   }
 
@@ -19,8 +19,8 @@ class ServerAPI {
     return this.get<string>('/random-number');
   }
 
-  public async getEvents() {
-    return this.get<IEvent[]>('/events');
+  public async getEvents(search?: string) {
+    return this.get<IEvent[]>('/events', { params: { search } });
   }
 }
 
