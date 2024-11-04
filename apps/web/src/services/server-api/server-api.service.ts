@@ -1,3 +1,4 @@
+import { IEvent } from '@events/shared';
 import axios, { AxiosInstance } from 'axios';
 
 import { SERVER_CONSTANTS } from 'const';
@@ -16,6 +17,10 @@ class ServerAPI {
 
   public async getRandomNumber() {
     return this.get<string>('/random-number');
+  }
+
+  public async getEvents() {
+    return this.get<IEvent[]>('/events');
   }
 }
 

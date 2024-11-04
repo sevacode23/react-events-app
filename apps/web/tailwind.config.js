@@ -23,7 +23,7 @@ export default {
       },
 
       gridTemplateColumns: {
-        'fill-320': 'repeat(auto-fill, 320px)',
+        'fit-320': 'repeat(auto-fit, 320px)',
       },
 
       boxShadow: {

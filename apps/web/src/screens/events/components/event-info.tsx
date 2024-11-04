@@ -2,6 +2,7 @@ export interface IEventInfoProps {
   title: string;
   date: string;
   location: string;
+  image: string;
 }
 
 export const EventInfo = (props: IEventInfoProps) => {

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "devDependencies": {
+    "@events/shared": "*",
     "@eslint/js": "^9.11.1",
     "@types/express": "^5.0.0",
     "@typescript-eslint/eslint-plugin": "^8.7.0",
@@ -15,7 +16,6 @@
     "prettier": "^3.3.3"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.59.0",
     "@types/cors": "^2.8.17",
     "cors": "^2.8.5",
     "express": "^4.21.0"
