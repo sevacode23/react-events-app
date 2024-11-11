@@ -1,4 +1,8 @@
 import { useState, useCallback, useMemo } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { TCreateEvent } from '@events/shared';
+
+import { serverAPI } from 'services/server-api';
 
 interface IFormState {
   title: string;
@@ -18,6 +22,11 @@ const INIT_FORM_STATE: IFormState = {
 
 export const useCreateEventForm = () => {
   const [form, setForm] = useState(INIT_FORM_STATE);
+
+  const { mutate, isPending, error } = useMutation({
+    mutationFn: (createEvent: TCreateEvent) =>
+      serverAPI.createEvent(createEvent),
+  });
 
   const updateField = (field: keyof IFormState, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -58,10 +67,21 @@ export const useCreateEventForm = () => {
 
   const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+
+    mutate({
+      title: form.title,
+      description: form.description,
+      image: form.description,
+      date: form.date,
+      location: form.location,
+      time: form.time,
+    });
   };
 
   return {
     ...form,
+    isPending,
+    error,
     onChangeTitle,
     onChangeDescription,
     onChangeDate,

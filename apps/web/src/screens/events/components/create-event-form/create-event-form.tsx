@@ -1,4 +1,10 @@
-import { Button, ControlLabelWrapper, Modal, TextField } from 'components/UI';
+import {
+  Button,
+  ControlLabelWrapper,
+  ErrorBlockProxy,
+  Modal,
+  TextField,
+} from 'components/UI';
 
 import { useCreateEventForm } from './create-event-form.state';
 
@@ -15,6 +21,8 @@ export const CreateEventForm = (props: IProps) => {
     date,
     time,
     location,
+    error,
+    isPending,
     onChangeTitle,
     onChangeDescription,
     onChangeDate,
@@ -22,6 +30,8 @@ export const CreateEventForm = (props: IProps) => {
     onChangeLocation,
     onSubmit,
   } = useCreateEventForm();
+
+  const RenderButton = isPending ? 'Submitting...' : <Button>Create</Button>;
 
   return (
     <Modal>
@@ -70,8 +80,10 @@ export const CreateEventForm = (props: IProps) => {
             Cancel
           </Button>
 
-          <Button>Create</Button>
+          {RenderButton}
         </div>
+
+        <ErrorBlockProxy title="Failed to create event" error={error} />
       </form>
     </Modal>
   );

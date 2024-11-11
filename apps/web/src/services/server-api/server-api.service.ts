@@ -1,5 +1,5 @@
-import { IEvent } from '@events/shared';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { IEvent, TCreateEvent } from '@events/shared';
 
 import { SERVER_CONSTANTS } from 'const';
 
@@ -10,8 +10,17 @@ class ServerAPI {
     this.instance = axios.create({ baseURL: SERVER_CONSTANTS.URL });
   }
 
-  private async get<T>(url: string, config?: AxiosRequestConfig<T>) {
-    const response = await this.instance.get<T>(url, config);
+  private async get<TData>(url: string, config?: AxiosRequestConfig<TData>) {
+    const response = await this.instance.get<TData>(url, config);
+    return response.data;
+  }
+
+  public async post<TResponse, TData>(
+    url: string,
+    data: TData,
+    config?: AxiosRequestConfig<TData>
+  ) {
+    const response = await this.instance.post<TResponse>(url, data, config);
     return response.data;
   }
 
@@ -21,6 +30,10 @@ class ServerAPI {
 
   public async getEvents(search?: string) {
     return this.get<IEvent[]>('/events', { params: { search } });
+  }
+
+  public async createEvent(createEvent: TCreateEvent) {
+    return this.post('/events', createEvent);
   }
 }
 

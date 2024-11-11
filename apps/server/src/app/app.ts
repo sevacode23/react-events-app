@@ -1,9 +1,8 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import { IEvent } from '@events/shared';
+import { IEvent, TCreateEvent } from '@events/shared';
 
-import { EVENTS } from '../data/events';
-import { generateRandomNumber, sleep } from '../utils';
+import { createEvent, generateRandomNumber, readEvents, sleep } from '../utils';
 
 interface IEventsParams {
   search?: string;
@@ -11,6 +10,7 @@ interface IEventsParams {
 
 export const app = express();
 
+app.use(express.json());
 app.use(express.static('./public'));
 app.use(
   cors({
@@ -29,7 +29,7 @@ app.get(
   async (req: Request<unknown, IEvent[], unknown, IEventsParams>, res) => {
     const search = req.query.search;
 
-    let events = [...EVENTS];
+    let events = [...(await readEvents())];
 
     if (search) {
       events = events.filter((event) => {
@@ -40,6 +40,32 @@ app.get(
     }
 
     res.send(events);
+  }
+);
+
+app.post(
+  '/events',
+  async (req: Request<unknown, unknown, TCreateEvent>, res) => {
+    const { body } = req;
+
+    if (!body) {
+      res.status(400).send({ error: { message: 'Body is required' } });
+    }
+
+    if (
+      !body.title?.trim() ||
+      !body.description?.trim() ||
+      !body.location?.trim() ||
+      !body.image?.trim() ||
+      !body.time?.trim() ||
+      !body.date?.trim()
+    ) {
+      res.status(400).send({ error: { message: 'Invalid data provided' } });
+    }
+
+    const newEvent = await createEvent(body);
+
+    res.status(201).send(newEvent);
   }
 );
 
