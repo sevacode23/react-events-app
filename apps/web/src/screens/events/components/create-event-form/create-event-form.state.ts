@@ -10,6 +10,7 @@ interface IFormState {
   date: string;
   time: string;
   location: string;
+  image?: string;
 }
 
 const INIT_FORM_STATE: IFormState = {
@@ -28,16 +29,16 @@ export const useCreateEventForm = () => {
       serverAPI.createEvent(createEvent),
   });
 
-  const updateField = (field: keyof IFormState, value: string) => {
+  const updateField = useCallback((field: keyof IFormState, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
-  };
+  }, []);
 
   const changeTextHandler = useCallback(
     (field: keyof IFormState) =>
       (event: React.ChangeEvent<HTMLInputElement>) => {
         updateField(field, event.target.value);
       },
-    []
+    [updateField]
   );
 
   const onChangeTitle = useMemo(
@@ -65,13 +66,24 @@ export const useCreateEventForm = () => {
     [changeTextHandler]
   );
 
+  const onSelectImage = useCallback(
+    (image: string) => {
+      updateField('image', image);
+    },
+    [updateField]
+  );
+
   const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+
+    if (!form.image) {
+      return;
+    }
 
     mutate({
       title: form.title,
       description: form.description,
-      image: form.description,
+      image: form.image,
       date: form.date,
       location: form.location,
       time: form.time,
@@ -87,6 +99,7 @@ export const useCreateEventForm = () => {
     onChangeDate,
     onChangeTime,
     onChangeLocation,
+    onSelectImage,
     onSubmit,
   };
 };

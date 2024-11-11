@@ -32,6 +32,10 @@ class ServerAPI {
     return this.get<IEvent[]>('/events', { params: { search } });
   }
 
+  public async getEventImages() {
+    return this.get<string[]>('events/images');
+  }
+
   public async createEvent(createEvent: TCreateEvent) {
     return this.post('/events', createEvent);
   }

@@ -2,11 +2,11 @@ import {
   Button,
   ControlLabelWrapper,
   ErrorBlockProxy,
-  Modal,
   TextField,
 } from 'components/UI';
 
 import { useCreateEventForm } from './create-event-form.state';
+import { ImagePicker } from '../image-picker';
 
 interface IProps {
   onClose: () => void;
@@ -17,6 +17,7 @@ export const CreateEventForm = (props: IProps) => {
 
   const {
     title,
+    image,
     description,
     date,
     time,
@@ -28,63 +29,64 @@ export const CreateEventForm = (props: IProps) => {
     onChangeDate,
     onChangeTime,
     onChangeLocation,
+    onSelectImage,
     onSubmit,
   } = useCreateEventForm();
 
   const RenderButton = isPending ? 'Submitting...' : <Button>Create</Button>;
 
   return (
-    <Modal>
-      <form className="w-96 grid gap-y-7" onSubmit={onSubmit}>
-        <div className="grid gap-y-5">
-          <TextField label="TITLE" value={title} onChange={onChangeTitle} />
+    <form className="w-[26rem] grid gap-y-7" onSubmit={onSubmit}>
+      <div className="grid gap-y-5">
+        <TextField label="TITLE" value={title} onChange={onChangeTitle} />
 
-          <TextField
-            isArea
-            label="DESCRIPTION"
-            value={description}
-            onChange={onChangeDescription}
-          />
+        <ImagePicker selected={image} onSelect={onSelectImage} />
+
+        <TextField
+          isArea
+          label="DESCRIPTION"
+          value={description}
+          onChange={onChangeDescription}
+        />
+      </div>
+
+      <div className="grid gap-y-5">
+        <div className="grid grid-flow-col justify-start gap-x-6">
+          <ControlLabelWrapper label="DATE">
+            <input
+              className="input min-w-40"
+              type="date"
+              value={date}
+              onChange={onChangeDate}
+            />
+          </ControlLabelWrapper>
+
+          <ControlLabelWrapper label="TIME">
+            <input
+              className="input min-w-32"
+              type="time"
+              value={time}
+              onChange={onChangeTime}
+            />
+          </ControlLabelWrapper>
         </div>
 
-        <div className="grid gap-y-5">
-          <div className="grid grid-flow-col justify-start gap-x-6">
-            <ControlLabelWrapper label="DATE">
-              <input
-                className="input min-w-40"
-                type="date"
-                value={date}
-                onChange={onChangeDate}
-              />
-            </ControlLabelWrapper>
+        <TextField
+          label="LOCATION"
+          value={location}
+          onChange={onChangeLocation}
+        />
+      </div>
 
-            <ControlLabelWrapper label="TIME">
-              <input
-                className="input min-w-32"
-                type="time"
-                value={time}
-                onChange={onChangeTime}
-              />
-            </ControlLabelWrapper>
-          </div>
+      <div className="grid justify-end gap-x-2 grid-flow-col">
+        <Button variant="text" onClick={onClose}>
+          Cancel
+        </Button>
 
-          <TextField
-            label="LOCATION"
-            value={location}
-            onChange={onChangeLocation}
-          />
-        </div>
+        {RenderButton}
+      </div>
 
-        <div className="grid justify-end gap-x-2 grid-flow-col">
-          <Button variant="text" onClick={onClose}>
-            Cancel
-          </Button>
-
-          {RenderButton}
-        </div>
-
-        <ErrorBlockProxy title="Failed to create event" error={error} />
-      </form>
-    </Modal>
+      <ErrorBlockProxy title="Failed to create event" error={error} />
+    </form>
   );
 };

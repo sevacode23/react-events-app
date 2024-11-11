@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { IEvent, TCreateEvent } from '@events/shared';
 
-import { createEvent, generateRandomNumber, readEvents, sleep } from '../utils';
+import { createEvent, readEvents } from '../utils';
 
 interface IEventsParams {
   search?: string;
@@ -43,6 +43,16 @@ app.get(
   }
 );
 
+app.get('/events/images', (_req, res) => {
+  res.send([
+    'buzzing-city.jpg',
+    'laptop-on-desk.jpg',
+    'meeting-networking.jpg',
+    'park.jpg',
+    'women-coding.jpg',
+  ]);
+});
+
 app.post(
   '/events',
   async (req: Request<unknown, unknown, TCreateEvent>, res) => {
@@ -68,12 +78,6 @@ app.post(
     res.status(201).send(newEvent);
   }
 );
-
-app.get('/random-number', async (_req: Request, res: Response) => {
-  await sleep(1000);
-
-  res.status(200).send(generateRandomNumber(-1000, 1000).toString());
-});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
