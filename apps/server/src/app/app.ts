@@ -3,6 +3,7 @@ import cors from 'cors';
 import { IEvent, TCreateEvent } from '@events/shared';
 
 import { createEvent, readEvents } from '../utils';
+import { EVENT_IMAGES } from '../constant';
 
 interface IEventsParams {
   search?: string;
@@ -44,13 +45,7 @@ app.get(
 );
 
 app.get('/events/images', (_req, res) => {
-  res.send([
-    'buzzing-city.jpg',
-    'laptop-on-desk.jpg',
-    'meeting-networking.jpg',
-    'park.jpg',
-    'women-coding.jpg',
-  ]);
+  res.send(EVENT_IMAGES);
 });
 
 app.post(
@@ -71,6 +66,7 @@ app.post(
       !body.date?.trim()
     ) {
       res.status(400).send({ error: { message: 'Invalid data provided' } });
+      return;
     }
 
     const newEvent = await createEvent(body);

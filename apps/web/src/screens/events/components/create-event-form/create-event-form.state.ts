@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { TCreateEvent } from '@events/shared';
 
 import { serverAPI } from 'services/server-api';
+import { queryClient } from 'services/react-query';
 
 interface IFormState {
   title: string;
@@ -21,12 +22,17 @@ const INIT_FORM_STATE: IFormState = {
   location: '',
 };
 
-export const useCreateEventForm = () => {
+export const useCreateEventForm = (onClose: () => void) => {
   const [form, setForm] = useState(INIT_FORM_STATE);
 
   const { mutate, isPending, error } = useMutation({
     mutationFn: (createEvent: TCreateEvent) =>
       serverAPI.createEvent(createEvent),
+
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['events'] });
+      onClose();
+    },
   });
 
   const updateField = useCallback((field: keyof IFormState, value: string) => {

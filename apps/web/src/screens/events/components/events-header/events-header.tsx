@@ -2,9 +2,9 @@ import { IMAGES } from 'components/image';
 import { Modal } from 'components/UI';
 
 import { CreateEventButton } from '../create-event-button';
+import { CreateEventForm } from '../create-event-form';
 
 import { useEventsHeader } from './events-header.state';
-import { CreateEventForm } from '../create-event-form';
 
 export const EventsHeader = () => {
   const { isShowForm, onCloseForm, onOpenForm } = useEventsHeader();

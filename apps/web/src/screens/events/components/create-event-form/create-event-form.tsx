@@ -31,7 +31,7 @@ export const CreateEventForm = (props: IProps) => {
     onChangeLocation,
     onSelectImage,
     onSubmit,
-  } = useCreateEventForm();
+  } = useCreateEventForm(onClose);
 
   const RenderButton = isPending ? 'Submitting...' : <Button>Create</Button>;
 
