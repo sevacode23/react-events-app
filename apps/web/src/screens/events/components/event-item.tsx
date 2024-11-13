@@ -1,10 +1,16 @@
+import { Link } from 'react-router-dom';
+
 import { Button } from 'components/UI';
-import { SERVER_CONSTANTS } from 'const';
+import { ROUTES, SERVER_CONSTANTS } from 'const';
 
 import { EventInfo, IEventInfoProps } from './event-info';
 
-export const Event = (props: IEventInfoProps) => {
-  const { title, date, location, image } = props;
+interface IProps extends IEventInfoProps {
+  id: string;
+}
+
+export const EventItem = (props: IProps) => {
+  const { id, title, date, location, image } = props;
 
   return (
     <div className="rounded-md bg-arsenic shadow-cardDark overflow-hidden">
@@ -18,7 +24,9 @@ export const Event = (props: IEventInfoProps) => {
           image={image}
         />
 
-        <Button>View Details</Button>
+        <Link to={ROUTES.EVENTS + '/' + id}>
+          <Button>View Details</Button>
+        </Link>
       </div>
     </div>
   );

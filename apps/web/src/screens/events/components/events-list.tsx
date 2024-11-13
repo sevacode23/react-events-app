@@ -1,6 +1,6 @@
 import { IEvent } from '@events/shared';
 
-import { Event } from './event';
+import { EventItem } from './event-item';
 
 interface IProps {
   events: IEvent[];
@@ -10,8 +10,9 @@ export const EventsList = (props: IProps) => {
   const { events } = props;
 
   const RenderEvents = events.map((event) => (
-    <Event
+    <EventItem
       key={event.id}
+      id={event.id}
       title={event.title}
       date={event.date}
       location={event.location}

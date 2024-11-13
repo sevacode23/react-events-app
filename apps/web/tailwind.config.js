@@ -15,6 +15,7 @@ export default {
         platinum: '#E2E5EB',
         darkChocolate: '#3F0C26',
         pansyPurple: '#7C184C',
+        onyx: '#343B3F',
       },
 
       fontFamily: {

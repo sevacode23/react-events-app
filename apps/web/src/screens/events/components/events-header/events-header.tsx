@@ -18,7 +18,7 @@ export const EventsHeader = () => {
   return (
     <>
       <section
-        className="pt-12 pb-32 px-2 grid gap-y-16 text-eerieBlack font-bold sm:px-[15%]"
+        className="pt-12 pb-32 p-header grid gap-y-16 text-eerieBlack font-bold"
         style={{ backgroundImage: `url(${IMAGES.meetUp})` }}
       >
         <div className="grid grid-flow-col justify-between">

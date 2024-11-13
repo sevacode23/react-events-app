@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { QueryClientProvider } from '@tanstack/react-query';
 
-import { App } from 'screens/app';
+import { Router } from 'screens/router';
 import { queryClient } from 'services/react-query';
 
 import './index.css';
@@ -16,7 +16,7 @@ if (!container) {
 createRoot(container).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <App />
+      <Router />
     </QueryClientProvider>
   </StrictMode>
 );
