@@ -28,7 +28,7 @@
   }
 
   .p-header {
-    @apply px-2 sm:px-[15%];
+    @apply px-4 sm:px-[15%];
   }
 }
 

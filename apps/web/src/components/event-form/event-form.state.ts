@@ -5,6 +5,11 @@ import { TCreateEvent } from '@events/shared';
 import { serverAPI } from 'services/server-api';
 import { queryClient } from 'services/react-query';
 
+export interface IUseEventFormProps {
+  onClose: () => void;
+  init?: TCreateEvent;
+}
+
 interface IFormState {
   title: string;
   description: string;
@@ -22,8 +27,10 @@ const INIT_FORM_STATE: IFormState = {
   location: '',
 };
 
-export const useCreateEventForm = (onClose: () => void) => {
-  const [form, setForm] = useState(INIT_FORM_STATE);
+export const useEventForm = (props: IUseEventFormProps) => {
+  const { init, onClose } = props;
+
+  const [form, setForm] = useState(init ?? INIT_FORM_STATE);
 
   const { mutate, isPending, error } = useMutation({
     mutationFn: (createEvent: TCreateEvent) =>

@@ -24,16 +24,16 @@ class ServerAPI {
     return response.data;
   }
 
-  public async getRandomNumber() {
-    return this.get<string>('/random-number');
-  }
-
   public async getEvents(search?: string) {
     return this.get<IEvent[]>('/events', { params: { search } });
   }
 
+  public async getEvent(id: string) {
+    return this.get<IEvent>('/events/' + id);
+  }
+
   public async getEventImages() {
-    return this.get<string[]>('events/images');
+    return this.get<string[]>('/event-images');
   }
 
   public async createEvent(createEvent: TCreateEvent) {

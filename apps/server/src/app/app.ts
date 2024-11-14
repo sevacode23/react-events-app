@@ -44,7 +44,27 @@ app.get(
   }
 );
 
-app.get('/events/images', (_req, res) => {
+app.get('/events/:id', async (req, res) => {
+  const id = req.params.id;
+
+  if (!id) {
+    res.status(400).send({ error: { message: 'Event id is required' } });
+    return;
+  }
+
+  const events = await readEvents();
+
+  const event = events.find((event) => event.id === id);
+
+  if (!event) {
+    res.status(404).send({ error: { message: 'Event not found' } });
+    return;
+  }
+
+  res.status(200).send(event);
+});
+
+app.get('/event-images', (_req, res) => {
   res.send(EVENT_IMAGES);
 });
 

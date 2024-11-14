@@ -1,19 +1,14 @@
+import { EventForm } from 'components/event-form';
 import { IMAGES } from 'components/image';
-import { Modal } from 'components/UI';
 
 import { CreateEventButton } from '../create-event-button';
-import { CreateEventForm } from '../create-event-form';
 
 import { useEventsHeader } from './events-header.state';
 
 export const EventsHeader = () => {
   const { isShowForm, onCloseForm, onOpenForm } = useEventsHeader();
 
-  const RenderModal = isShowForm ? (
-    <Modal>
-      <CreateEventForm onClose={onCloseForm} />
-    </Modal>
-  ) : null;
+  const RenderModal = isShowForm ? <EventForm onClose={onCloseForm} /> : null;
 
   return (
     <>
