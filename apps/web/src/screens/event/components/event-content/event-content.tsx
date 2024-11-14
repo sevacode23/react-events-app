@@ -11,8 +11,8 @@ import { useEventContent } from './event-content.state';
 
 const LoadedEvent = (props: IEvent) => (
   <EventContext.Provider value={{ fetchedEvent: { ...props } }}>
-    <div className="w-[40rem] grid gap-y-12 font-bold text-pastelBlue">
-      <div className="grid grid-flow-col justify-between">
+    <div className="grid gap-y-12 font-bold text-pastelBlue sm:w-[40rem]">
+      <div className="grid grid-flow-col justify-between gap-x-4">
         <h2 className="text-2xl text-azureWhite">{props.title}</h2>
 
         <EventControls />

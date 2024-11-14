@@ -13,11 +13,12 @@ export const EventInfo = () => {
 
   return (
     <div className="rounded-lg overflow-hidden bg-onyx grid gap-y-8">
-      <img className="w-full h-[20rem]" src={imageUrl} />
+      <img className="w-full" src={imageUrl} />
 
       <div className="p-12 pt-0 grid gap-y-5">
         <div className="grid">
           <b className="text-lg">{fetchedEvent.location}</b>
+
           <time
             className="text-2xl font-normal text-azureWhite"
             dateTime={`${fetchedEvent.date}T${fetchedEvent.time}Z`}
