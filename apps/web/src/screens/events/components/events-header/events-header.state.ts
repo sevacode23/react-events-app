@@ -11,5 +11,9 @@ export const useEventsHeader = () => {
     setIsShowForm(true);
   }, []);
 
-  return { isShowForm, onCloseForm, onOpenForm };
+  return {
+    isShowForm,
+    onCloseForm,
+    onOpenForm,
+  };
 };

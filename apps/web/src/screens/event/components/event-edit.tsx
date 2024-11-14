@@ -1,9 +1,8 @@
 import { useCallback, useState } from 'react';
-import { IEvent } from '@events/shared';
 
-import { EventForm } from 'components/event-form';
+import { EditEventForm } from './edit-event-form';
 
-export const EventEdit = (props: IEvent) => {
+export const EventEdit = () => {
   const [isShowForm, setIsShowForm] = useState(false);
 
   const onClick = useCallback(() => {
@@ -14,15 +13,13 @@ export const EventEdit = (props: IEvent) => {
     setIsShowForm(false);
   }, []);
 
-  const RenderForm = isShowForm ? (
-    <EventForm init={{ ...props }} onClose={onClose} />
-  ) : null;
+  const RenderForm = isShowForm ? <EditEventForm onClose={onClose} /> : null;
 
   return (
     <>
-      {RenderForm}
-
       <button onClick={onClick}>Edit</button>
+
+      {RenderForm}
     </>
   );
 };

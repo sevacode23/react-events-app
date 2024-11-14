@@ -9,8 +9,15 @@ import {
 
 import { IUseEventFormProps, useEventForm } from './event-form.state';
 
-export const EventForm = (props: IUseEventFormProps) => {
-  const { init, onClose } = props;
+interface IProps extends IUseEventFormProps {
+  buttonLabel: string;
+  isPending: boolean;
+  error: Error | null;
+  onClose: () => void;
+}
+
+export const EventForm = (props: IProps) => {
+  const { buttonLabel, isPending, error, init, onClose, onSubmit } = props;
 
   const {
     title,
@@ -19,22 +26,24 @@ export const EventForm = (props: IUseEventFormProps) => {
     date,
     time,
     location,
-    error,
-    isPending,
     onChangeTitle,
     onChangeDescription,
     onChangeDate,
     onChangeTime,
     onChangeLocation,
     onSelectImage,
-    onSubmit,
-  } = useEventForm({ init, onClose });
+    handleSubmit,
+  } = useEventForm({ init, onSubmit });
 
-  const RenderButton = isPending ? 'Submitting...' : <Button>Create</Button>;
+  const RenderButton = isPending ? (
+    'Submitting...'
+  ) : (
+    <Button>{buttonLabel}</Button>
+  );
 
   return (
     <Modal>
-      <form className="w-[26rem] grid gap-y-7" onSubmit={onSubmit}>
+      <form className="w-[26rem] grid gap-y-7" onSubmit={handleSubmit}>
         <div className="grid gap-y-5">
           <TextField label="TITLE" value={title} onChange={onChangeTitle} />
 

@@ -1,16 +1,11 @@
 import { useState, useCallback, useMemo } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { TCreateEvent } from '@events/shared';
-
-import { serverAPI } from 'services/server-api';
-import { queryClient } from 'services/react-query';
 
 export interface IUseEventFormProps {
-  onClose: () => void;
-  init?: TCreateEvent;
+  onSubmit: (form: IEventFormData) => void;
+  init?: IEventFormData;
 }
 
-interface IFormState {
+export interface IEventFormData {
   title: string;
   description: string;
   date: string;
@@ -19,7 +14,7 @@ interface IFormState {
   image?: string;
 }
 
-const INIT_FORM_STATE: IFormState = {
+const INIT_FORM_STATE: IEventFormData = {
   title: '',
   description: '',
   date: '',
@@ -28,26 +23,19 @@ const INIT_FORM_STATE: IFormState = {
 };
 
 export const useEventForm = (props: IUseEventFormProps) => {
-  const { init, onClose } = props;
+  const { init, onSubmit } = props;
 
   const [form, setForm] = useState(init ?? INIT_FORM_STATE);
 
-  const { mutate, isPending, error } = useMutation({
-    mutationFn: (createEvent: TCreateEvent) =>
-      serverAPI.createEvent(createEvent),
-
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ['events'] });
-      onClose();
+  const updateField = useCallback(
+    (field: keyof IEventFormData, value: string) => {
+      setForm((prev) => ({ ...prev, [field]: value }));
     },
-  });
-
-  const updateField = useCallback((field: keyof IFormState, value: string) => {
-    setForm((prev) => ({ ...prev, [field]: value }));
-  }, []);
+    []
+  );
 
   const changeTextHandler = useCallback(
-    (field: keyof IFormState) =>
+    (field: keyof IEventFormData) =>
       (event: React.ChangeEvent<HTMLInputElement>) => {
         updateField(field, event.target.value);
       },
@@ -86,33 +74,20 @@ export const useEventForm = (props: IUseEventFormProps) => {
     [updateField]
   );
 
-  const onSubmit = (event: React.FormEvent) => {
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!form.image) {
-      return;
-    }
-
-    mutate({
-      title: form.title,
-      description: form.description,
-      image: form.image,
-      date: form.date,
-      location: form.location,
-      time: form.time,
-    });
+    onSubmit(form);
   };
 
   return {
     ...form,
-    isPending,
-    error,
     onChangeTitle,
     onChangeDescription,
     onChangeDate,
     onChangeTime,
     onChangeLocation,
     onSelectImage,
-    onSubmit,
+    handleSubmit,
   };
 };

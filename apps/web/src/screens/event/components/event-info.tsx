@@ -1,11 +1,15 @@
-import { IEvent } from '@events/shared';
-
 import { getImageUrl } from 'utils';
 
-export const EventInfo = (props: IEvent) => {
-  const { description, date, time, location, image } = props;
+import { useEventContext } from '../context';
 
-  const imageUrl = getImageUrl(image);
+export const EventInfo = () => {
+  const { fetchedEvent } = useEventContext();
+
+  if (!fetchedEvent) {
+    return null;
+  }
+
+  const imageUrl = getImageUrl(fetchedEvent.image);
 
   return (
     <div className="rounded-lg overflow-hidden bg-onyx grid gap-y-8">
@@ -13,16 +17,16 @@ export const EventInfo = (props: IEvent) => {
 
       <div className="p-12 pt-0 grid gap-y-5">
         <div className="grid">
-          <b className="text-lg">{location}</b>
+          <b className="text-lg">{fetchedEvent.location}</b>
           <time
             className="text-2xl font-normal text-azureWhite"
-            dateTime={`${date}T${time}Z`}
+            dateTime={`${fetchedEvent.date}T${fetchedEvent.time}Z`}
           >
-            {date}@{time}
+            {fetchedEvent.date}@{fetchedEvent.time}
           </time>
         </div>
 
-        <p className="text-xl font-normal">{description}</p>
+        <p className="text-xl font-normal">{fetchedEvent.description}</p>
       </div>
     </div>
   );
