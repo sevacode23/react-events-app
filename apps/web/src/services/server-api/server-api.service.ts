@@ -10,12 +10,15 @@ class ServerAPI {
     this.instance = axios.create({ baseURL: SERVER_CONSTANTS.URL });
   }
 
-  private async get<TData>(url: string, config?: AxiosRequestConfig<TData>) {
-    const response = await this.instance.get<TData>(url, config);
+  private async get<TResponse>(
+    url: string,
+    config?: AxiosRequestConfig<TResponse>
+  ) {
+    const response = await this.instance.get<TResponse>(url, config);
     return response.data;
   }
 
-  public async post<TResponse, TData>(
+  private async post<TResponse, TData>(
     url: string,
     data: TData,
     config?: AxiosRequestConfig<TData>
@@ -24,12 +27,20 @@ class ServerAPI {
     return response.data;
   }
 
+  private async delete<TResponse>(
+    url: string,
+    config?: AxiosRequestConfig<TResponse>
+  ) {
+    const response = await this.instance.delete<TResponse>(url, config);
+    return response.data;
+  }
+
   public async getEvents(search?: string) {
     return this.get<IEvent[]>('/events', { params: { search } });
   }
 
-  public async getEvent(id: string) {
-    return this.get<IEvent>('/events/' + id);
+  public async getEvent(eventId: string) {
+    return this.get<IEvent>('/events/' + eventId);
   }
 
   public async getEventImages() {
@@ -38,6 +49,10 @@ class ServerAPI {
 
   public async createEvent(createEvent: TCreateEvent) {
     return this.post('/events', createEvent);
+  }
+
+  public async deleteEvent(eventId: string) {
+    return this.delete<IEvent>('/events/' + eventId);
   }
 }
 

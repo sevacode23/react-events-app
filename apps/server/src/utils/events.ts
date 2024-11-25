@@ -82,3 +82,20 @@ export const createEvent = async (createEvent: TCreateEvent) => {
 
   return newEvent;
 };
+
+export const deleteEvent = async (eventId: string) => {
+  const events = await readEvents();
+
+  const index = events.findIndex((event) => event.id === eventId);
+
+  if (!index) {
+    return null;
+  }
+
+  const copy = [...events];
+  copy.splice(index, 1);
+
+  await writeEvents(copy);
+
+  return events[index];
+};

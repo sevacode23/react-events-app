@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { IEvent, TCreateEvent } from '@events/shared';
 
-import { createEvent, readEvents } from '../utils';
+import { createEvent, deleteEvent, readEvents } from '../utils';
 import { EVENT_IMAGES } from '../constant';
 
 interface IEventsParams {
@@ -58,6 +58,19 @@ app.get('/events/:id', async (req, res) => {
 
   if (!event) {
     res.status(404).send({ error: { message: 'Event not found' } });
+    return;
+  }
+
+  res.status(200).send(event);
+});
+
+app.delete('/events/:id', async (req, res) => {
+  const id = req.params.id;
+
+  const event = await deleteEvent(id);
+
+  if (!event) {
+    res.status(400).send({ error: { message: 'Event id is required' } });
     return;
   }
 
