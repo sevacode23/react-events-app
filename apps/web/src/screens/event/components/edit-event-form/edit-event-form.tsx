@@ -9,13 +9,14 @@ interface IProps {
 export const EditEventForm = (props: IProps) => {
   const { onClose } = props;
 
-  const { fetchedEvent, onSubmit } = useEditEventForm();
+  const { fetchedEvent, isPending, error, onSubmit } =
+    useEditEventForm(onClose);
 
   return (
     <EventForm
       buttonLabel="Update"
-      isPending={false}
-      error={null}
+      isPending={isPending}
+      error={error}
       init={fetchedEvent}
       onClose={onClose}
       onSubmit={onSubmit}

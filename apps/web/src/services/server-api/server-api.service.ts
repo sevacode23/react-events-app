@@ -20,10 +20,19 @@ class ServerAPI {
 
   private async post<TResponse, TData>(
     url: string,
-    data: TData,
+    data?: TData,
     config?: AxiosRequestConfig<TData>
   ) {
     const response = await this.instance.post<TResponse>(url, data, config);
+    return response.data;
+  }
+
+  private async put<TResponse, TData>(
+    url: string,
+    data?: TData,
+    config?: AxiosRequestConfig<TData>
+  ) {
+    const response = await this.instance.put<TResponse>(url, data, config);
     return response.data;
   }
 
@@ -48,11 +57,15 @@ class ServerAPI {
   }
 
   public async createEvent(createEvent: TCreateEvent) {
-    return this.post('/events', createEvent);
+    return this.post<IEvent, TCreateEvent>('/events', createEvent);
   }
 
   public async deleteEvent(eventId: string) {
     return this.delete<IEvent>('/events/' + eventId);
+  }
+
+  public async updateEvent(eventId: string, data: TCreateEvent) {
+    return this.put<IEvent, TCreateEvent>('/events/' + eventId, data);
   }
 }
 

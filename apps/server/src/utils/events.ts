@@ -7,6 +7,17 @@ const EVENT_ID_START = 'e';
 
 const getFilePath = () => resolve(__dirname, '../..', 'data', 'events.json');
 
+const findEventIndexById = (events: IEvent[], eventId: string) =>
+  events.findIndex((event) => event.id === eventId);
+
+export const validateEventData = (event: TCreateEvent) =>
+  event.title?.trim() &&
+  event.description?.trim() &&
+  event.location?.trim() &&
+  event.image?.trim() &&
+  event.time?.trim() &&
+  event.date?.trim();
+
 export const readEvents = async () => {
   const buffer = await readFile(getFilePath());
 
@@ -98,4 +109,23 @@ export const deleteEvent = async (eventId: string) => {
   await writeEvents(copy);
 
   return events[index];
+};
+
+export const updateEvent = async (eventId: string, data: TCreateEvent) => {
+  const events = await readEvents();
+
+  const index = findEventIndexById(events, eventId);
+
+  if (index === -1) {
+    return null;
+  }
+
+  const newEvents = [...events];
+  const newEvent: IEvent = { id: eventId, ...data };
+
+  newEvents.splice(index, 1, newEvent);
+
+  await writeEvents(newEvents);
+
+  return newEvent;
 };

@@ -11,7 +11,7 @@ export interface IEventFormData {
   date: string;
   time: string;
   location: string;
-  image?: string;
+  image: string;
 }
 
 const INIT_FORM_STATE: IEventFormData = {
@@ -20,6 +20,7 @@ const INIT_FORM_STATE: IEventFormData = {
   date: '',
   time: '',
   location: '',
+  image: '',
 };
 
 export const useEventForm = (props: IUseEventFormProps) => {

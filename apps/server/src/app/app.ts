@@ -2,7 +2,13 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { IEvent, TCreateEvent } from '@events/shared';
 
-import { createEvent, deleteEvent, readEvents } from '../utils';
+import {
+  createEvent,
+  deleteEvent,
+  readEvents,
+  updateEvent,
+  validateEventData,
+} from '../utils';
 import { EVENT_IMAGES } from '../constant';
 
 interface IEventsParams {
@@ -70,12 +76,42 @@ app.delete('/events/:id', async (req, res) => {
   const event = await deleteEvent(id);
 
   if (!event) {
-    res.status(400).send({ error: { message: 'Event id is required' } });
+    res.status(404).send({ error: { message: 'Event not found' } });
     return;
   }
 
   res.status(200).send(event);
 });
+
+app.put(
+  '/events/:id',
+  async (req: Request<{ id: string }, unknown, TCreateEvent>, res) => {
+    const id = req.params.id;
+
+    if (!validateEventData(req.body)) {
+      res.status(400).send({ error: { message: 'Invalid data provided' } });
+      return;
+    }
+
+    const { title, description, image, date, time, location } = req.body;
+
+    const event = await updateEvent(id, {
+      title,
+      description,
+      image,
+      date,
+      time,
+      location,
+    });
+
+    if (!event) {
+      res.status(404).send({ error: { message: 'Event not found' } });
+      return;
+    }
+
+    res.status(200).send(event);
+  }
+);
 
 app.get('/event-images', (_req, res) => {
   res.send(EVENT_IMAGES);
@@ -90,14 +126,7 @@ app.post(
       res.status(400).send({ error: { message: 'Body is required' } });
     }
 
-    if (
-      !body.title?.trim() ||
-      !body.description?.trim() ||
-      !body.location?.trim() ||
-      !body.image?.trim() ||
-      !body.time?.trim() ||
-      !body.date?.trim()
-    ) {
+    if (!validateEventData(body)) {
       res.status(400).send({ error: { message: 'Invalid data provided' } });
       return;
     }
