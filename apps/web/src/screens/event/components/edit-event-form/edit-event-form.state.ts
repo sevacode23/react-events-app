@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { IEvent } from '@events/shared';
 
 import { IEventFormData } from 'components/event-form';
 import { serverAPI } from 'services/server-api';
 import { queryClient } from 'services/react-query';
 
 import { useEventContext } from '../../context';
-import { IEvent } from '@events/shared';
 
 export const useEditEventForm = (onClose: () => void) => {
   const { fetchedEvent } = useEventContext();

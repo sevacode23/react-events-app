@@ -9,7 +9,8 @@ export const useSearchEvents = () => {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['events', { search: searchValue }],
-    queryFn: () => serverAPI.getEvents(searchValue),
+    queryFn: ({ queryKey }) =>
+      serverAPI.getEvents(queryKey[1].search as string),
 
     enabled: searchValue !== undefined,
   });
